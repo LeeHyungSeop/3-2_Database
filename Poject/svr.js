@@ -1,24 +1,41 @@
-const express = require('express')
-const sqlite3 = require('sqlite3').verbose(); 
-const path = require('path')
-const static = require('serve-static')
+const sqlite3 = require('sqlite3').verbose();
 
-const path = require('path'); // path 모듈 불러와서 변수에 담기
-const dbPath = path.resolve(__dirname, './db/Tproject.db');
+let db = new sqlite3.Database('./OpenAPI_Project_DB/project.db');
 
-
-let db = new sqlite3.Database('./db/Tproject.db'/*dbPath*/, sqlite3.OPEN_READWRITE, (err) => {
+// insert one row into the student table
+db.run(`INSERT INTO VOLUNTEERS (vID, vName, DOB, sName, phoneNum, accumCNT) VALUES (4, '홍길동', '2000-09-27', '금촌고등학교', '010-2468-1357', 0);`, function (err) {
     if (err) {
-        console.error(err.message);
-        console.error(dbPath);
-    } else {
-        console.log('Connected to the database.');
+        return console.log(err.message);
     }
-}); // db sqlite3 db에 연결하는 코드!!
+    // get the last insert id
+    console.log(`A row has been inserted with rowid ${this.lastID}`);
+});
 
-db.close((err) =>{
-  if(err){
-    console.error(err.message);
+// update 
+let sql1 = `UPDATE VOLUNTEERS SET phoneNum = '010-1111-2222'
+            WHERE sName = '이형섭'`;
+
+db.run(sql1, function (err) {
+    if (err) {
+        return console.error(err.message);
+    }
+    console.log(`Row(s) updated: ${this.changes}`);
+
+});
+
+// select
+let sql2 = `SELECT * FROM VOLUNTEERS
+           WHERE vName = '이형섭'`;
+
+db.all(sql2, [], (err, rows) => {
+  if (err) {
+    throw err;
   }
-  console.log('Close the database connection.');
-}); // db 닫는 코드!!
+  rows.forEach((row) => {
+    console.log(row);
+  });
+});
+
+// close the database connection
+db.close();
+
