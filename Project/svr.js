@@ -26,8 +26,8 @@ app.get('/volunteer_signup', (req, res) => {
 
 
 // volunteer's signup 버튼 눌렸다면
-app.post('/process/adduser', (req, res) => {
-  console.log('/process/adduser 호출됨' +req)
+app.post('/process/volunteer_signup', (req, res) => {
+  console.log('/process/volunteer_signup 호출됨' +req)
 
   const paramId = req.body.id
   const paramName = req.body.name
@@ -56,16 +56,13 @@ app.post('/process/adduser', (req, res) => {
         }
         if (res) {
           // console.dir(res);
-          console.log(`(Insert Successed!)A row has been inserted with rowid ${this.lastID}!`);
-          res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
-          res.write('<h2>회원가입 성공</h2>');
-          res.end();
+          console.log("회원가입 성공!");
+          // 회원가입 성공하면, 회원가입 성공 페이지로 안내
+          res.sendFile(__dirname + '/public/volunteer_signup_success.html');
         }
         else {
           console.log("Inserted Failed");
-          res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
-          res.write('<h2>회원가입에 실패하였습니다. </h2>');
-          res.end();
+          res.sendFile(__dirname + '/public/volunteer_signup_failure.html');
         }
     }
   );
