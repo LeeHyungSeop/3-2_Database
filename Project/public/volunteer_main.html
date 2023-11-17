@@ -4,5 +4,88 @@
     <title>Volunteer Main Page</title>
 </head>
     <h2>안녕하세요 회원님!</h2>
+    회원님의 현재 위치를 알려주세요.
+    가까운 곳의 노인복지회관을 찾아드릴게요.
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>  
+    <br></br>
+
+    
+    <select id="sido" onchange="optionChange();">
+        <option value="0">시/도</option>
+        <option value="1">서울특별시</option>
+        <option value="2">부산광역시</option>
+        <option value="3">대구광역시</option>
+        <option value="4">인천광역시</option>
+        <option value="5">광주광역시</option>
+        <option value="6">대전광역시</option>
+        <option value="7">울산광역시</option>
+        <option value="8">세종특별자치시</option>
+        <option value="9">경기도</option>
+        <option value="10">강원도</option>
+        <option value="11">충청북도</option>
+        <option value="12">충청남도</option>
+        <option value="13">전라북도</option>
+        <option value="14">전라남도</option>
+        <option value="15">경상북도</option>
+        <option value="16">경상남도</option>
+        <option value="17">제주특별자치도</option>
+    </select>
+
+    <select id="sigungu">
+        <option></option>
+    </select>
+
+    <script>
+        const key = "jiOmJfJl1DuS3wgn5gO+iklZUufTTr9upGZyPm2fHmlqVIuj0pUuUa7ixsTrQK1asGso3S73YM6bx49f2bnFbg==";
+        const url = "https://api.odcloud.kr/api/15004317/v1/uddi:a27dc8f0-26b8-42ca-8f4c-c33da26e51a1_201909202206";
+    
+        const sidoDropdown = document.getElementById('sido');
+        const sigunguDropdown = document.getElementById('sigungu');
+    
+        const queryParams = {
+            serviceKey: key,
+            page: '1',
+            perPage: '1000',
+            returnType: 'JSON',
+        };
+    
+        axios.get(url, { params: queryParams })
+            .then(response => {
+                console.log('Status:', response.status);
+                console.log('Headers:', response.headers);
+                console.log('Body:', response.data);
+                const data = JSON.stringify(response.data, null, 2)
+                console.log(data);
+            }).catch(error => {
+                    console.error('Error:', error);
+            });
+    
+            const uniqueSigungu = [...new Set(data.map(item => item.시군구))];
+
+
+            // Attach the optionChange function to the change event of the sido dropdown
+            sidoDropdown.addEventListener('change', optionChange);
+
+            // Define optionChange function here
+            function optionChange() {
+                // Clear previous options in sigungu dropdown
+                sigunguDropdown.innerHTML = '<option></option>';
+
+                // Get the selected value from sido dropdown
+                const selectedSido = sidoDropdown.value;
+                consol.log(selectedSido);
+
+                // Use the selected value to filter data and populate sigungu dropdown
+                const filteredData = data.filter(item => item.sido === selectedSido);
+                filteredData.forEach(item => {
+                    console.log(item);
+                    const option = document.createElement('option');
+                    option.value = item.sigungu;
+                    option.textContent = item.sigungu;
+                    sigunguDropdown.appendChild(option);
+                });
+            }
+        </script>
+                
 
 </html>

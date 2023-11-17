@@ -48,7 +48,7 @@ app.post('/process/volunteer_signup', (req, res) => {
         if (err) {
           console.log("SQL Query 실행시 Error.")
           console.dir(err);
-          // 이미 존재하는 아이디라면, 회원가입 실패
+          // 이미 존재하는 아이디라면, signup failure page로 안내
           if(err.errno == 19) {
             res.sendFile(__dirname + '/public/volunteer_signup_failure.html');
           }
@@ -57,7 +57,7 @@ app.post('/process/volunteer_signup', (req, res) => {
         if (res) {
           // console.dir(res);
           console.log("회원가입 성공!");
-          // 회원가입 성공하면, 회원가입 성공 페이지로 안내
+          // 회원가입 성공하면, signup success page로 안내
           res.sendFile(__dirname + '/public/volunteer_signup_success.html');
         }
         else {

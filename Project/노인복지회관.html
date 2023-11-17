@@ -23,7 +23,7 @@
             perPage: '1000',
             returnType: 'JSON',
         };
-
+        
         axios.get(url, { params: queryParams })
             .then(response => {
                 console.log('Status:', response.status);
