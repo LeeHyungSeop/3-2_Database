@@ -11,8 +11,13 @@ app.use(express.json())
 app.use('/public', static(path.join(__dirname, 'public'))); // pubilc에 대한 요청에서 현재 디렉토리에 있는 pubilc 디렉토리를 루트 디렉토리로 한다.
 console.log('현재 디렉토리 : ' + __dirname);
 
+// 회원가입 page로 안내
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/adduser.html')
+})
+// loging page로 안내
+app.get('/login', (req, res) => {
+  res.sendFile(__dirname + '/public/login.html')
 })
 
 // 회원가입 버튼 눌렸다면
@@ -25,8 +30,8 @@ app.post('/process/adduser', (req, res) => {
   const paramSchool = req.body.school
   const paramPhoneNum = req.body.pn
   // 받아온 data 출력
-  console.log('요청 파라미터 : ' + paramId + ', ' + paramName + ', ' + paramDOB + ', ' + paramSchool + ', ' + paramPhoneNum);
-
+  console.log('requested parameters : ' + paramId + ', ' + paramName + ', ' + paramDOB + ', ' + paramSchool + ', ' + paramPhoneNum);
+  
   // DB object 생성
   var db = new sqlite3.Database('./OpenAPI_Project_DB/project.db');
   // DB open
@@ -36,12 +41,16 @@ app.post('/process/adduser', (req, res) => {
     [paramId, paramName, paramDOB, paramSchool, paramPhoneNum, 0],
     function (err) {
         if (err) {
-          console.log("SQL 실행시 오류 발생함")
+          console.log("SQL Query 실행시 Error.")
           console.dir(err);
-          return 
+          // 이미 존재하는 아이디라면, 회원가입 실패
+          if(err.errno == 19) {
+            res.sendFile(__dirname + '/public/signup_failure.html');
+          }
+          return
         }
         if (res) {
-          console.dir(res);
+          // console.dir(res);
           console.log(`(Insert Successed!)A row has been inserted with rowid ${this.lastID}!`);
           res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
           res.write('<h2>회원가입 성공</h2>');
@@ -59,29 +68,6 @@ app.post('/process/adduser', (req, res) => {
   db.close();
 })
 
-app.listen(3000, () => {
-  console.log('listening on port 3000')
+app.listen(5500, () => {
+  console.log('listening on port 5500')
 })
-
-// update 
-// let sql1 = `UPDATE VOLUNTEERS SET phoneNum = '010-1111-2222' WHERE sName = '이형섭'`;
-
-// db.run(sql1, function (err) {
-//     if (err) {
-//         return console.error(err.message);
-//     }
-//     console.log(`Row(s) updated: ${this.changes}`);
-// });
-
-// // select
-// let sql2 = `SELECT * FROM VOLUNTEERS WHERE vName = '이형섭'`;
-
-// db.all(sql2, [], (err, rows) => {
-//   if (err) {
-//     throw err;
-//   }
-//   rows.forEach((row) => {
-//     console.log(row);
-//   });
-// });
-
