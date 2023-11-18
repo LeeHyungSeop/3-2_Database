@@ -32,7 +32,7 @@
     </select>
 
     <select id="sigungu">
-        <option></option>
+        <option>시/군/구</option>
     </select>
 
     <script>
@@ -48,44 +48,55 @@
             perPage: '1000',
             returnType: 'JSON',
         };
-    
+        
+        var data=null;
+        var selectedSido=null;
+        var selectedSigungu=null;
+        // axios를 이용해 open API 호출, data에 response.data를 저장
         axios.get(url, { params: queryParams })
             .then(response => {
                 console.log('Status:', response.status);
                 console.log('Headers:', response.headers);
                 console.log('Body:', response.data);
-                const data = JSON.stringify(response.data, null, 2)
-                console.log(data);
+                data = JSON.stringify(response.data, null, 2);
+                // data를 array로 만들기
+                data = Array.from(JSON.parse(data).data);
+                console.log(data)
             }).catch(error => {
                     console.error('Error:', error);
             });
-    
-            const uniqueSigungu = [...new Set(data.map(item => item.시군구))];
+
+        // 시/도 dropdown에서 선택된 값을 이용하여 시/군/구 dropdown에 option 추가 (dynamic select 구현)
+        function optionChange() {
+            // Get the selected value from sido dropdown
+            selectedSido = sidoDropdown.options[sidoDropdown.selectedIndex].text;
+            console.log("selectedSido's value : " + selectedSido);
+            
+            // selectedSido값과 일치하는 "시도" element만 추출
+            const filteredData = data.filter(item => item.시도 === selectedSido);
+            console.log("filteredData : " + filteredData);
+            // 추출한 data에서 unique "시군구"값만 추출
+            const uniqueSigungu = [...new Set(filteredData.map(item => item.시군구))];
+            console.log("uniqueSigungu : " + uniqueSigungu);
+            
+            // uniqueSigungu값을 sigungu dropdown에 추가
+            sigunguDropdown.innerHTML = '<option></option>';
+            uniqueSigungu.forEach(item => {
+                sigunguDropdown.innerHTML += `<option>${item}</option>`;
+            });
+        }
+
+        // sigungu dropdown에서 선택된 값을 출력
+        sigunguDropdown.addEventListener('change', () => {
+            const selectedSigungu = sigunguDropdown.options[sigunguDropdown.selectedIndex].text;
+            
+            <!-- selectedSido, selectedSigungu값으로 Naver Map에 검색하여 근처의 노인복지회관 정보 제공할 것임 -->
+            console.log('user가 선택한 시/도 : ' + selectedSido);
+            console.log('user가 선택한 시/군/구 : ' + selectedSigungu);
+        });
 
 
-            // Attach the optionChange function to the change event of the sido dropdown
-            sidoDropdown.addEventListener('change', optionChange);
-
-            // Define optionChange function here
-            function optionChange() {
-                // Clear previous options in sigungu dropdown
-                sigunguDropdown.innerHTML = '<option></option>';
-
-                // Get the selected value from sido dropdown
-                const selectedSido = sidoDropdown.value;
-                consol.log(selectedSido);
-
-                // Use the selected value to filter data and populate sigungu dropdown
-                const filteredData = data.filter(item => item.sido === selectedSido);
-                filteredData.forEach(item => {
-                    console.log(item);
-                    const option = document.createElement('option');
-                    option.value = item.sigungu;
-                    option.textContent = item.sigungu;
-                    sigunguDropdown.appendChild(option);
-                });
-            }
-        </script>
+    </script>
                 
 
 </html>
