@@ -106,40 +106,6 @@ app.post('/process/volunteer_login', (req, res) => {
   db.close();
 })
 
-// wc's login 버튼 눌렸다면
-app.post('/process/wc_login', (req, res) => {
-  console.log('/process/wc_login 호출됨' +req)
-
-  const paramId = req.body.id
-  
-  // DB object 생성
-  var db = new sqlite3.Database('./OpenAPI_Project_DB/project.db');
-  // DB open
-  db.all(
-    // DB의 wcS 테이블에서 id가 일치하는 tuple(회원) 검색
-    `SELECT * FROM WELFARECENTERS WHERE wcName = ?;`,
-    [paramId],
-    function (err, rows) {
-        console.log("res : " + res);
-        if (err) {
-          console.log("SQL Query 실행시 Error.")
-          console.dir(err);
-          return
-        }
-        if (rows.length > 0) {
-          console.log("Login Successed!");
-          res.sendFile(__dirname + '/public/wc_main.html');
-        }
-        else {
-          console.log("Login Failed");
-          res.sendFile(__dirname + '/public/wc_login_failure.html');
-        }
-    }
-  );
-  // close the database connection
-  db.close();
-})
-
 // service 등록 버튼 눌렸다면
 app.post('/process/wc_register', (req, res) => {
   console.log('/process/wc_register 호출됨' +req)
@@ -203,6 +169,42 @@ app.post('/process/wc_register', (req, res) => {
   db.close();
 })
 
+// wc_register.html에서 게시된 공고 확인하기
+app.post('/process/service_search', (req, res) => {
+  console.log('/process/service_search 호출됨' +req)
+
+  const param_wcName = req.body.wcName
+  // 받아온 data 출력
+  console.log('requested parameters : ' + param_wcName);
+  
+  // DB object 생성
+  var db = new sqlite3.Database('./OpenAPI_Project_DB/project.db');
+  // DB open
+  db.all(
+    // DB의 SERVICES 테이블에서 wcName이 일치하는 공고들을 return
+    `SELECT * FROM SERVICES WHERE wcName = ?;`,
+    [param_wcName],
+    function (err, rows) {
+      console.log("res : " + res);
+      if (err) {
+        console.log("SQL Query 실행시 Error.")
+        console.dir(err);
+        return
+      }
+      if (rows.length > 0) {
+        console.log(param_wcName+"에 공고가 존재합니다.");
+        // 공고들이 담겨있는 rows를 client에게 전송
+        res.json({ success: true, data: rows });
+      }
+      else{
+        console.log("공고가 존재하지 않습니다.");
+      }
+    }
+  );
+  // close the database connection
+  db.close();
+})
+
 // volunteer_main.html에서 보낸 노인복지회관에 대한 공고들을 return
 app.get('/process/find_services', (req, res) => {
   console.log('/process/find_services 호출됨' +req)
@@ -210,6 +212,6 @@ app.get('/process/find_services', (req, res) => {
 
 });
 
-app.listen(5500, () => {
-  console.log('listening on port 5500')
+app.listen(3000, () => {
+  console.log('listening on port 3000')
 })

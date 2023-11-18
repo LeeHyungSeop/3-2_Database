@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "better-sqlite3": "^9.1.1"
+    "better-sqlite3": "^9.1.1",
+    "cjs": "^0.0.11",
+    "ejs": "^3.1.9"
   }
 }

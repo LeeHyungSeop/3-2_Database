@@ -3,6 +3,9 @@
 
 <head>
     <title>Welfare Center's Main Page</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>    
 
 <body>
@@ -32,6 +35,22 @@
         <input type="submit" value="등록하기">
         
     </form>
+
+    <h1>현재 게시된 공고를 확인할 수도 있어요.</h1>
+    <form action="/process/service_search" method="post">
+        <table>
+            <tr>
+                <td><label>노인복지회관명</label></td>
+                <td><input type="text" name="wcName" placeholder="필수 입력" required></td>
+            </tr>
+        </table>
+        <input type="submit" value="검색하기">
+    </form>
+    
+    
+
+
+
 </body>
 
 </html>
