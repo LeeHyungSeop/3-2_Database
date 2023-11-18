@@ -23,6 +23,10 @@ app.get('/volunteer_login', (req, res) => {
 app.get('/volunteer_signup', (req, res) => {
   res.sendFile(__dirname + '/public/volunteer_signup.html')
 })
+// wc's login page로 안내
+app.get('/wc_login', (req, res) => { 
+  res.sendFile(__dirname + '/public/wc_login.html')
+})
 
 
 // volunteer's signup 버튼 눌렸다면
@@ -70,9 +74,9 @@ app.post('/process/volunteer_signup', (req, res) => {
   db.close();
 })
 
-// login 버튼 눌렸다면
-app.post('/process/login', (req, res) => {
-  console.log('/process/login 호출됨' +req)
+// volunteer's login 버튼 눌렸다면
+app.post('/process/volunteer_login', (req, res) => {
+  console.log('/process/volunteer_login 호출됨' +req)
 
   const paramId = req.body.id
   
@@ -103,6 +107,47 @@ app.post('/process/login', (req, res) => {
   // close the database connection
   db.close();
 })
+
+// wc's login 버튼 눌렸다면
+app.post('/process/wc_login', (req, res) => {
+  console.log('/process/wc_login 호출됨' +req)
+
+  const paramId = req.body.id
+  
+  // DB object 생성
+  var db = new sqlite3.Database('./OpenAPI_Project_DB/project.db');
+  // DB open
+  db.all(
+    // DB의 wcS 테이블에서 id가 일치하는 tuple(회원) 검색
+    `SELECT * FROM WELFARECENTERS WHERE wcName = ?;`,
+    [paramId],
+    function (err, rows) {
+        console.log("res : " + res);
+        if (err) {
+          console.log("SQL Query 실행시 Error.")
+          console.dir(err);
+          return
+        }
+        if (rows.length > 0) {
+          console.log("Login Successed!");
+          res.sendFile(__dirname + '/public/wc_main.html');
+        }
+        else {
+          console.log("Login Failed");
+          res.sendFile(__dirname + '/public/wc_login_failure.html');
+        }
+    }
+  );
+  // close the database connection
+  db.close();
+})
+
+// volunteer_main.html에서 보낸 노인복지회관에 대한 공고들을 return
+app.get('/process/find_services', (req, res) => {
+  console.log('/process/find_services 호출됨' +req)
+  // 작성해야 함
+
+});
 
 app.listen(5500, () => {
   console.log('listening on port 5500')
