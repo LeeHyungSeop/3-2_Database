@@ -2,15 +2,16 @@
 <html>
 <head>
     <title>Volunteer Main Page</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>  
 </head>
     <h2>안녕하세요 회원님!</h2>
-    회원님의 현재 위치를 알려주세요.
-    가까운 곳의 노인복지회관을 찾아드릴게요.
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>  
+    <div>봉사하고 싶은 지역을 선택해주세요.</div>
+    <div>회원님의 현재 위치로부터 길을 안내해드릴게요.</div>
     <br></br>
 
-    
-    <select id="sido" onchange="optionChange();">
+    <select id="sido" onchange="sigunguOptionChange();">
         <option value="0">시/도</option>
         <option value="1">서울특별시</option>
         <option value="2">부산광역시</option>
@@ -31,72 +32,132 @@
         <option value="17">제주특별자치도</option>
     </select>
 
-    <select id="sigungu">
+    <select id="sigungu" onchange="wcOptionChange();">
         <option>시/군/구</option>
     </select>
 
-    <script>
-        const key = "jiOmJfJl1DuS3wgn5gO+iklZUufTTr9upGZyPm2fHmlqVIuj0pUuUa7ixsTrQK1asGso3S73YM6bx49f2bnFbg==";
-        const url = "https://api.odcloud.kr/api/15004317/v1/uddi:a27dc8f0-26b8-42ca-8f4c-c33da26e51a1_201909202206";
-    
-        const sidoDropdown = document.getElementById('sido');
-        const sigunguDropdown = document.getElementById('sigungu');
-    
-        const queryParams = {
-            serviceKey: key,
-            page: '1',
-            perPage: '1000',
-            returnType: 'JSON',
-        };
+    <select id="wc">
+        <option>노인복지회관</option>
+    </select>
+
+    <body>
+        <div id="map" style="width:100%;height:600px;"></div>
+        <br></br>
+        <div id="user_select"></div>
+        <div id="wc_list"></div>
         
-        var data=null;
-        var selectedSido=null;
-        var selectedSigungu=null;
-        // axios를 이용해 open API 호출, data에 response.data를 저장
-        axios.get(url, { params: queryParams })
-            .then(response => {
-                console.log('Status:', response.status);
-                console.log('Headers:', response.headers);
-                console.log('Body:', response.data);
-                data = JSON.stringify(response.data, null, 2);
-                // data를 array로 만들기
-                data = Array.from(JSON.parse(data).data);
-                console.log(data)
-            }).catch(error => {
-                    console.error('Error:', error);
-            });
-
-        // 시/도 dropdown에서 선택된 값을 이용하여 시/군/구 dropdown에 option 추가 (dynamic select 구현)
-        function optionChange() {
-            // Get the selected value from sido dropdown
-            selectedSido = sidoDropdown.options[sidoDropdown.selectedIndex].text;
-            console.log("selectedSido's value : " + selectedSido);
+        <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=eu5iha9pf2"></script>
+        <script>
+            const key = "jiOmJfJl1DuS3wgn5gO+iklZUufTTr9upGZyPm2fHmlqVIuj0pUuUa7ixsTrQK1asGso3S73YM6bx49f2bnFbg==";
+            const url = "https://api.odcloud.kr/api/15004317/v1/uddi:a27dc8f0-26b8-42ca-8f4c-c33da26e51a1_201909202206";
+        
+            const sidoDropdown = document.getElementById('sido');
+            const sigunguDropdown = document.getElementById('sigungu');
+            const wcDropdown = document.getElementById('wc');
+        
+            const queryParams = {
+                serviceKey: key,
+                page: '1',
+                perPage: '1000',
+                returnType: 'JSON',
+            };
             
-            // selectedSido값과 일치하는 "시도" element만 추출
-            const filteredData = data.filter(item => item.시도 === selectedSido);
-            console.log("filteredData : " + filteredData);
-            // 추출한 data에서 unique "시군구"값만 추출
-            const uniqueSigungu = [...new Set(filteredData.map(item => item.시군구))];
-            console.log("uniqueSigungu : " + uniqueSigungu);
-            
-            // uniqueSigungu값을 sigungu dropdown에 추가
-            sigunguDropdown.innerHTML = '<option></option>';
-            uniqueSigungu.forEach(item => {
-                sigunguDropdown.innerHTML += `<option>${item}</option>`;
-            });
-        }
+            var data=null;
+            var selectedSido=null;
+            var selectedSigungu=null;
+            // axios를 이용해 open API 호출, data에 response.data를 저장
+            axios.get(url, { params: queryParams })
+                .then(response => {
+                    console.log('Status:', response.status);
+                    console.log('Headers:', response.headers);
+                    console.log('Body:', response.data);
+                    data = JSON.stringify(response.data, null, 2);
+                    // data를 array로 만들기
+                    data = Array.from(JSON.parse(data).data);
+                    // console.log(data)
+                }).catch(error => {
+                        console.error('Error:', error);
+                });
 
-        // sigungu dropdown에서 선택된 값을 출력
-        sigunguDropdown.addEventListener('change', () => {
-            const selectedSigungu = sigunguDropdown.options[sigunguDropdown.selectedIndex].text;
-            
-            <!-- selectedSido, selectedSigungu값으로 Naver Map에 검색하여 근처의 노인복지회관 정보 제공할 것임 -->
-            console.log('user가 선택한 시/도 : ' + selectedSido);
-            console.log('user가 선택한 시/군/구 : ' + selectedSigungu);
-        });
-
-
-    </script>
+            // 시/도 dropdown에서 선택된 값을 이용하여 시/군/구 dropdown에 option 추가 (dynamic select 구현)
+            function sigunguOptionChange() {
+                // Get the selected value from sido dropdown
+                selectedSido = sidoDropdown.options[sidoDropdown.selectedIndex].text;
+                console.log("selectedSido's value : " + selectedSido);
                 
+                // selectedSido값과 일치하는 "시도" element만 추출
+                const filteredData = data.filter(item => item.시도 === selectedSido);
+                // 추출한 data에서 unique "시군구"값만 추출
+                const uniqueSigungu = [...new Set(filteredData.map(item => item.시군구))];
+                console.log("uniqueSigungu : " + uniqueSigungu);
+                // uniqueSigungu값을 sigungu dropdown에 추가
+                sigunguDropdown.innerHTML = '<option></option>';
+                uniqueSigungu.forEach(item => {
+                    sigunguDropdown.innerHTML += `<option>${item}</option>`;
+                });
+            }
+            // 시/군/구 dropdown에서 선택된 값을 이용하여 노인복지회관 dropdown에 option 추가 (dynamic select 구현)
+            function wcOptionChange() {
+                // Get the selected value from sigungu dropdown
+                selectedSigungu = sigunguDropdown.options[sigunguDropdown.selectedIndex].text;
+                console.log("selectedSigungu's value : " + selectedSigungu);
+                
+                // selectedSigungu값과 일치하는 element만 추출
+                const filteredData = data.filter(item => item.시도 === selectedSido && item.시군구 === selectedSigungu);
+                
+                // uniqueWc값을 wc dropdown에 추가
+                filteredData.innerHTML = '<option></option>';
+                filteredData.forEach(item => {
+                    wcDropdown.innerHTML += `<option>${item.기관명}</option>`;
+                });
+            }
+            
+            // 복지회관을 선택하면? -> 해당 복지회관까지 길 안내, 해당 복지회관에서 공고한 봉사 리스트 출력
+            sigunguDropdown.addEventListener('change', () => {
+                selectedWc = wcDropdown.options[wcDropdown.selectedIndex].text;
+                // 최종적으로 user가 선택한 sido, sigungu, wc 출력
+                console.log("user가 선택한 시/도 : " + selectedSido);
+                console.log("user가 선택한 시/군/구 : " + selectedSigungu);
+                console.log("user가 선택한 노인복지회관 : " + selectedWc);
+
+                // Naver Map API 사용
+
+
+
+                // selectedWc에서 공고한 봉사 리스트 출력
+            });
+
+
+
+        </script>
+    </body>         
 
 </html>
+
+<!-- // sigungu dropdown에서 선택된 값을 출력
+sigunguDropdown.addEventListener('change', () => {
+    selectedSigungu = sigunguDropdown.options[sigunguDropdown.selectedIndex].text;
+
+    // web page에 user가 선택한 시/도, 시/군/구 출력
+    console.log('user가 선택한 시/도 : ' + selectedSido);
+    console.log('user가 선택한 시/군/구 : ' + selectedSigungu);
+    document.getElementById("user_select").innerHTML = `<h3>${selectedSido} ${selectedSigungu}에 존재하는 노인복지센터 정보입니다.</h3>`;
+
+    // Naver Map API 사용
+    var mapOptions = {
+        center: new naver.maps.LatLng(37.3595704, 127.105399),
+        zoom: 15
+    };
+
+    var map = new naver.maps.Map('map', mapOptions);
+
+    var marker = new naver.maps.Marker({
+        position: new naver.maps.LatLng(37.3595704, 127.105399),
+        map: map
+    });
+
+    // 클릭한 지점으로 마커 옮기기
+    naver.maps.Event.addListener(map, 'click', function(e) {
+        marker.setPosition(e.latlng);
+    });
+}); -->
