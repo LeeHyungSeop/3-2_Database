@@ -1,0 +1,37 @@
+<!-- welfare center login 성공되면서 동시에 main page -->
+<html>
+
+<head>
+    <title>Welfare Center's Main Page</title>
+</head>    
+
+<body>
+    <h1>청년의 도움이 필요한 공고를 등록해주세요.</h1>
+    <br>
+
+    <form action="/process/wc_register" method="post">
+        <table>
+            <tr>
+                <td><label>노인복지회관명</label></td>
+                <td><input type="text" name="wcName" placeholder="필수 입력" required></td>
+            </tr>
+            <tr>
+                <td><label>신청자 이름</label></td>
+                <td><input type="text" name="olderName"  placeholder="필수 입력" required></td>
+            </tr>
+            <tr>
+                <td><label>신청자 전화번호</label></td>
+                <td><input type="text" name="olderPN" placeholder="필수 입력" required></td>
+            </tr>
+            <tr>
+                <td><label>필요한 서비스</label></td>
+                <td><input type="text" name="sDescribe" placeholder="ex: 온라인 예매, 짐 옮기기" required></td>
+            </tr>            
+
+        </table>
+        <input type="submit" value="등록하기">
+        
+    </form>
+</body>
+
+</html>

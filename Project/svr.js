@@ -24,11 +24,9 @@ app.get('/volunteer_signup', (req, res) => {
   res.sendFile(__dirname + '/public/volunteer_signup.html')
 })
 // wc's login page로 안내
-app.get('/wc_login', (req, res) => { 
-  res.sendFile(__dirname + '/public/wc_login.html')
+app.get('/wc_register', (req, res) => { 
+  res.sendFile(__dirname + '/public/wc_register.html')
 })
-
-
 // volunteer's signup 버튼 눌렸다면
 app.post('/process/volunteer_signup', (req, res) => {
   console.log('/process/volunteer_signup 호출됨' +req)
@@ -136,6 +134,69 @@ app.post('/process/wc_login', (req, res) => {
           console.log("Login Failed");
           res.sendFile(__dirname + '/public/wc_login_failure.html');
         }
+    }
+  );
+  // close the database connection
+  db.close();
+})
+
+// service 등록 버튼 눌렸다면
+app.post('/process/wc_register', (req, res) => {
+  console.log('/process/wc_register 호출됨' +req)
+
+  const param_wcName = req.body.wcName
+  const param_olderName = req.body.olderName
+  const param_olderPN = req.body.olderPN
+  const param_sDescribe = req.body.sDescribe
+  // 받아온 data 출력
+  console.log('requested parameters : ' + param_wcName + ', ' + param_olderName + ', ' + param_olderPN + ', ' + param_sDescribe);
+  
+  // DB object 생성
+  var db = new sqlite3.Database('./OpenAPI_Project_DB/project.db');
+  // DB open
+  db.all(
+    // DB의 WELFARCENTERS 테이블에 param_wcName이 일치하는 wcName가 있는지 확인
+    `SELECT * FROM WELFARECENTERS WHERE wcName = ?;`,
+    [param_wcName],
+    function (err, rows) {
+      console.log("res : " + res);
+      if (err) {
+        console.log("SQL Query 실행시 Error.")
+        console.dir(err);
+        return
+      }
+      if (rows.length > 0) {
+        console.log("wcName이 존재합니다.");
+        // DB의 SERVICES 테이블에 새로운 service(공고) 추가
+        db.all(
+          `INSERT INTO SERVICES (sNum, vName, vPhoneNum, isFinish, isAssign, wcName, vID, sDescribe) VALUES (?, ?, ?, ?, ?, ?, ?, ?);`,
+          // sNum은 primary key이므로 자동으로 증가하게끔 설정
+          [null, param_olderName, param_olderPN, 0, 0, param_wcName, null, param_sDescribe],
+          function (reg_err) {
+            if (reg_err) {
+              console.log("SQL Query 실행시 Error.")
+              console.dir(reg_err);
+              res.sendFile(__dirname + '/public/wc_register_failure.html');
+              
+              return
+            }
+            if (res) {
+              // console.dir(res);
+              console.log("Register Success!");
+              // 공고 등록이 성공하면, wc register success page로 안내
+              res.sendFile(__dirname + '/public/wc_register_success.html');
+            }
+            else {
+              console.log("Inserted Failed");
+              res.sendFile(__dirname + '/public/wc_register_failure.html');
+            }
+          }
+        )
+      }
+      else{
+        console.log("wcName이 존재하지 않습니다.");
+        res.sendFile(__dirname + '/public/wc_register_failure.html');
+      }
     }
   );
   // close the database connection
