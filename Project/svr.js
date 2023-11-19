@@ -208,6 +208,42 @@ app.post('/process/search_service_from_db', (req, res) => {
   db.close();
 })
 
+// wc_register.html에서 "취소" button에 대한 처리
+app.post("/process/cancel_service", (req, res) => {
+  console.log('/process/cancel_service 호출됨' +req)
+
+  const param_sNum = req.body.sNum
+  // 받아온 data 출력
+  console.log('requested parameters : ' + param_sNum);
+  
+  // DB object 생성
+  var db = new sqlite3.Database('./OpenAPI_Project_DB/project.db');
+  // DB open
+  db.all(
+    // DB의 SERVICES 테이블에서 sNum이 일치하는 공고를 삭제
+    `DELETE FROM SERVICES WHERE sNum = ?;`,
+    [param_sNum],
+    function (err, rows) {
+      console.log("rows : " + rows);
+      if (err) {
+        console.log("SQL Query 실행시 Error.")
+        console.dir(err);
+        return
+      }
+      if (res) {
+        console.log(param_sNum+" service를 삭제했습니다.");
+        // 공고가 존재하면, 공고 삭제 성공
+      }
+      else{
+        console.log(param_sNum+" service가 존재하지 않습니다.");
+      }
+    }
+  );
+  // close the database connection
+  db.close();
+})
+
+
 // volunteer_main.html에서 보낸 노인복지회관에 대한 공고들을 return
 app.get('/process/find_services', (req, res) => {
   console.log('/process/find_services 호출됨' +req)

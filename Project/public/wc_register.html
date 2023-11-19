@@ -36,6 +36,8 @@
         
     </form>
 
+    <hr>
+
     <h1>현재 게시된 공고를 확인할 수도 있어요.</h1>
     <div>
         <label>노인복지회관명</label>
@@ -95,7 +97,7 @@
 
                     // "show_table_columns" table에 규격에 맞게 받아온 rows를 출력
                     var show_table_columns = document.getElementById('show_table_columns')
-                    // 받아온 rows를 table에 출력, 기존의 table 내용은 삭제
+                    // 받아온 rows를 table에 출력, 기존의 table 내용은 삭제, 각각의 row마다 "취소" button 삽입
                     show_table_columns.innerHTML = "<tr><th>서비스고유번호</th><th>신청자 이름</th><th>신청자 전화번호</th><th>서비스 간략한 설명</th><th>할당 여부</th><th>처리 여부</th></tr>"
                     for(let i = 0; i < rows.length; i++){
                         show_table_columns.innerHTML += 
@@ -107,6 +109,45 @@
                             "</td><td>" + rows[i].isFinish + 
                             "</td></tr>"
                     }
+                    // 각각의 row 바로 오른쪽에 "취소" button 삽입
+                    for(let i = 0; i < rows.length; i++){
+                        show_table_columns.rows[i+1].insertCell(6)
+                        show_table_columns.rows[i+1].cells[6].innerHTML = "<button id='cancel_btn'>취소</button>"
+                    }
+                    // "취소" button을 누르면 해당 row 삭제, DB에서 해당 service 삭제
+                    for(let i = 0; i < rows.length; i++){
+                        show_table_columns.rows[i+1].cells[6].addEventListener('click', () => {
+                            console.log("취소 button을 눌렀습니다.")
+                            console.log("취소할 service의 sNum : " + rows[i].sNum)
+                            fetch('/process/cancel_service', {
+                                method: 'post',
+                                body: JSON.stringify({
+                                    sNum: rows[i].sNum
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            }).then((res) => res.json())
+                            .then((res) => {
+                                // json type으로 parsing
+                                console.log("res.result : " + res.result)
+                                if(res.result == "failure"){
+                                    console.log('취소를 실패했습니다.')
+                                    return;
+                                }
+                                // 받아온 data=rows(res)를 갖고, "show_service_from_db"에 table로 출력해줌
+                                else if(res.result == "success"){
+                                    console.log('취소를 성공했습니다.')
+                                    // 해당 row 삭제
+                                    show_table_columns.deleteRow(i+1)
+                                }
+                            })
+                        })
+                    }
+                    
+
+
+
 
 
 
