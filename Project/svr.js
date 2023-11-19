@@ -1,10 +1,14 @@
-`use strict`
-const { exec } = require('child_process');
 const express = require('express')
 const path = require('path')
 const static = require('serve-static')
 const sqlite3 = require('sqlite3').verbose();
 const app = express()
+const nunjucks = require('nunjucks');
+
+nunjucks.configure(__dirname + '/public', {
+  autoescape: true,
+  express: app,
+});
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
@@ -94,7 +98,8 @@ app.post('/process/volunteer_login', (req, res) => {
         }
         if (rows.length > 0) {
           console.log("Login Successed!");
-          res.sendFile(__dirname + '/public/volunteer_main.html');
+          // paramId를 volunteer_main.html로 전달
+          res.render('volunteer_main.html', {vID:paramId});
         }
         else {
           console.log("Login Failed");

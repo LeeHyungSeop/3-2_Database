@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>  
 </head>
-    <h2>안녕하세요 회원님!</h2>
+
+    <h1>{{ vID }}님 안녕하세요!</h1>
     <div>봉사하고 싶은 지역을 선택해주세요.</div>
     <div>회원님의 현재 위치로부터 길을 안내해드릴게요.</div>
     <br></br>
@@ -48,6 +49,10 @@
         
         <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=eu5iha9pf2"></script>
         <script>
+
+            var vID = "{{ vID }}";
+            console.log("vID from server:", vID);
+
             const key = "jiOmJfJl1DuS3wgn5gO+iklZUufTTr9upGZyPm2fHmlqVIuj0pUuUa7ixsTrQK1asGso3S73YM6bx49f2bnFbg==";
             const url = "https://api.odcloud.kr/api/15004317/v1/uddi:a27dc8f0-26b8-42ca-8f4c-c33da26e51a1_201909202206";
         
@@ -135,31 +140,3 @@
     </body>         
 
 </html>
-
-<!-- // sigungu dropdown에서 선택된 값을 출력
-sigunguDropdown.addEventListener('change', () => {
-    selectedSigungu = sigunguDropdown.options[sigunguDropdown.selectedIndex].text;
-
-    // web page에 user가 선택한 시/도, 시/군/구 출력
-    console.log('user가 선택한 시/도 : ' + selectedSido);
-    console.log('user가 선택한 시/군/구 : ' + selectedSigungu);
-    document.getElementById("user_select").innerHTML = `<h3>${selectedSido} ${selectedSigungu}에 존재하는 노인복지센터 정보입니다.</h3>`;
-
-    // Naver Map API 사용
-    var mapOptions = {
-        center: new naver.maps.LatLng(37.3595704, 127.105399),
-        zoom: 15
-    };
-
-    var map = new naver.maps.Map('map', mapOptions);
-
-    var marker = new naver.maps.Marker({
-        position: new naver.maps.LatLng(37.3595704, 127.105399),
-        map: map
-    });
-
-    // 클릭한 지점으로 마커 옮기기
-    naver.maps.Event.addListener(map, 'click', function(e) {
-        marker.setPosition(e.latlng);
-    });
-}); -->
