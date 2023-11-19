@@ -137,7 +137,7 @@ app.post('/process/wc_register', (req, res) => {
         db.all(
           `INSERT INTO SERVICES (sNum, vName, vPhoneNum, isFinish, isAssign, wcName, vID, sDescribe) VALUES (?, ?, ?, ?, ?, ?, ?, ?);`,
           // sNum은 primary key이므로 자동으로 증가하게끔 설정
-          [null, param_olderName, param_olderPN, 0, 0, param_wcName, null, param_sDescribe],
+          [null, param_olderName, param_olderPN, 'N', 'N', param_wcName, null, param_sDescribe],
           function (reg_err) {
             if (reg_err) {
               console.log("SQL Query 실행시 Error.")
@@ -170,8 +170,8 @@ app.post('/process/wc_register', (req, res) => {
 })
 
 // wc_register.html에서 게시된 공고 확인하기
-app.post('/process/service_search', (req, res) => {
-  console.log('/process/service_search 호출됨' +req)
+app.post('/process/search_service_from_db', (req, res) => {
+  console.log('/process/search_service_from_db 호출됨' +req)
 
   const param_wcName = req.body.wcName
   // 받아온 data 출력
@@ -193,11 +193,14 @@ app.post('/process/service_search', (req, res) => {
       }
       if (rows.length > 0) {
         console.log(param_wcName+"에 공고가 존재합니다.");
-        // 공고들이 담겨있는 rows를 client에게 전송
-        res.json({ success: true, data: rows });
+        // 공고들이 담겨있는 rows를 client에게 전송 (res.result="success"와 res.rows=rows)  
+        rows = JSON.stringify(rows);
+        console.log("rows : " + rows);
+        res.send({result:"success", rows:rows});
       }
       else{
         console.log("공고가 존재하지 않습니다.");
+        res.send({result:"failure"});
       }
     }
   );

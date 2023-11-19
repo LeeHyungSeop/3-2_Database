@@ -37,16 +37,88 @@
     </form>
 
     <h1>현재 게시된 공고를 확인할 수도 있어요.</h1>
-    <form action="/process/service_search" method="post">
-        <table>
-            <tr>
-                <td><label>노인복지회관명</label></td>
-                <td><input type="text" name="wcName" placeholder="필수 입력" required></td>
-            </tr>
-        </table>
-        <input type="submit" value="검색하기">
-    </form>
+    <div>
+        <label>노인복지회관명</label>
+        <input id="search_wcName" type="text" name="search_wcName" placeholder="필수 입력" required>
+        <br>
+        <button id="search_service_from_db">검색하기</button>
+        <div id="show_service_from_db">
+            <br>
+            <!-- "서비스고유번호", "신청자 이름", "신청자 전화번호", "서비스 간략한 설명", "할당 여부", "처리 여부" column명을 갖는 table, 규격설정 -->
+            <table id="show_table_columns" border="01">
+                <tr>
+                    <th>서비스고유번호</th>
+                    <th>신청자 이름</th>
+                    <th>신청자 전화번호</th>
+                    <th>서비스 간략한 설명</th>
+                    <th>할당 여부</th>
+                    <th>처리 여부</th>
+                </tr>
+        </div>
+    </div>
     
+    <script>
+        const search_btn = document.getElementById('search_service_from_db')
+        search_btn.addEventListener('click', () => {
+            searchDataFromDB()
+        })
+
+        const searchDataFromDB = () => {
+            fetch('/process/search_service_from_db', {
+                method: 'post',
+                body: JSON.stringify({
+                    wcName: document.getElementById('search_wcName').value
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then((res) => res.json())
+            .then((res) => {
+                // json type으로 parsing
+                console.log("res.result : " + res.result)
+                if(res.result == "failure"){
+                    console.log('data를 받아오지 못했습니다.')
+                    var show_table_columns = document.getElementById('show_table_columns')
+                    show_table_columns.innerHTML = "<tr><th>서비스고유번호</th><th>신청자 이름</th><th>신청자 전화번호</th><th>서비스 간략한 설명</th><th>할당 여부</th><th>처리 여부</th></tr>"
+                    document.getElementById('search_wcName').style.backgroundColor = "red"
+                    setTimeout(() => {
+                        document.getElementById('search_wcName').style.backgroundColor = "white"
+                    }, 1000)
+                    return;
+                }
+                // 받아온 data=rows(res)를 갖고, "show_service_from_db"에 table로 출력해줌
+                else if(res.result == "success"){
+                    console.log('data를 받아왔습니다.')
+                    // rows는 string type이므로 array type으로 변환
+                    const rows = JSON.parse(res.rows)
+                    console.log("rows : " + rows)
+
+                    // "show_table_columns" table에 규격에 맞게 받아온 rows를 출력
+                    var show_table_columns = document.getElementById('show_table_columns')
+                    // 받아온 rows를 table에 출력, 기존의 table 내용은 삭제
+                    show_table_columns.innerHTML = "<tr><th>서비스고유번호</th><th>신청자 이름</th><th>신청자 전화번호</th><th>서비스 간략한 설명</th><th>할당 여부</th><th>처리 여부</th></tr>"
+                    for(let i = 0; i < rows.length; i++){
+                        show_table_columns.innerHTML += 
+                            "<tr><td>" + rows[i].sNum + 
+                            "</td><td>" + rows[i].vName + 
+                            "</td><td>" + rows[i].vPhoneNum + 
+                            "</td><td>" + rows[i].sDescribe + 
+                            "</td><td>" + rows[i].isAssign + 
+                            "</td><td>" + rows[i].isFinish + 
+                            "</td></tr>"
+                    }
+
+
+
+
+
+                    
+                }
+            })
+        }
+
+
+    </script>
     
 
 
