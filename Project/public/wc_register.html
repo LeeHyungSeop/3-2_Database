@@ -12,36 +12,35 @@
     <h1>청년의 도움이 필요한 공고를 등록해주세요.</h1>
     <br>
 
-    <form action="/process/wc_register" method="post">
-        <table>
-            <tr>
-                <td><label>노인복지회관명</label></td>
-                <td><input type="text" name="wcName" placeholder="필수 입력" required></td>
-            </tr>
-            <tr>
-                <td><label>신청자 이름</label></td>
-                <td><input type="text" name="olderName"  placeholder="필수 입력" required></td>
-            </tr>
-            <tr>
-                <td><label>신청자 전화번호</label></td>
-                <td><input type="text" name="olderPN" placeholder="필수 입력" required></td>
-            </tr>
-            <tr>
-                <td><label>필요한 서비스</label></td>
-                <td><input type="text" name="sDescribe" placeholder="ex: 온라인 예매, 짐 옮기기" required></td>
-            </tr>            
+    <table>
+        <tr>
+            <td><label>노인복지회관명</label></td>
+            <td><input type="text" name="wcName" placeholder="필수 입력" required></td>
+        </tr>
+        <tr>
+            <td><label>신청자 이름</label></td>
+            <td><input type="text" name="olderName"  placeholder="필수 입력" required></td>
+        </tr>
+        <tr>
+            <td><label>신청자 전화번호</label></td>
+            <td><input type="text" name="olderPN" placeholder="필수 입력" required></td>
+        </tr>
+        <tr>
+            <td><label>필요한 서비스</label></td>
+            <td><input type="text" name="sDescribe" placeholder="ex: 온라인 예매, 짐 옮기기" required></td>
+        </tr>            
 
-        </table>
-        <input type="submit" value="등록하기">
-        
-    </form>
+    </table>
+    <button id="register_btn">등록하기</button>
 
     <hr>
 
-    <h1>현재 게시된 공고를 확인할 수도 있어요.</h1>
+    <h1>게시하신 공고를 검색, 취소, 완료 처리를 할 수 있어요.</h1>
     <div>
         <label>노인복지회관명</label>
         <input id="search_wcName" type="text" name="search_wcName" placeholder="필수 입력" required>
+        <label>봉사자 ID</label>
+        <input id="volunteer_id" type="text" name="volunteer_id" placeholder="완료처리시 입력" required>
         <br>
         <button id="search_service_from_db">검색하기</button>
         <div id="show_service_from_db">
@@ -60,11 +59,50 @@
     </div>
     
     <script>
+
+        // "등록하기" button에 대한 'click' event listener
+        const register_btn = document.getElementById('register_btn')
+        register_btn.addEventListener('click', () => {
+            console.log("등록하기 button을 눌렀습니다.")
+            registerDataToDB()
+        })
+        const registerDataToDB = () => {
+            fetch('/process/wc_register', {
+                method: 'post',
+                body: JSON.stringify({
+                    wcName: document.getElementsByName('wcName')[0].value,
+                    olderName: document.getElementsByName('olderName')[0].value,
+                    olderPN: document.getElementsByName('olderPN')[0].value,
+                    sDescribe: document.getElementsByName('sDescribe')[0].value
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then((res) => res.json())
+            .then((res) => {
+                // json type으로 parsing
+                console.log("res.result : " + res.result)
+                if(res.result == "No wcName"){
+                    alert("입력하신 노인복지회관은 존재하지 않습니다.")
+                    return;
+                }
+                else if(res.result == "Insert Failed"){
+                    alert("등록에 실패했습니다. 다시 시도해주세요.")
+                    return;
+                }
+                // 받아온 data=rows(res)를 갖고, "show_service_from_db"에 table로 출력해줌
+                else if(res.result == "success"){
+                    alert("등록에 성공했습니다.")
+                    return;
+                }
+            })
+        }
+        
+        // "검색하기" button에 대한 'click' event listener
         const search_btn = document.getElementById('search_service_from_db')
         search_btn.addEventListener('click', () => {
             searchDataFromDB()
         })
-
         const searchDataFromDB = () => {
             fetch('/process/search_service_from_db', {
                 method: 'post',
@@ -80,12 +118,12 @@
                 console.log("res.result : " + res.result)
                 if(res.result == "failure"){
                     console.log('data를 받아오지 못했습니다.')
-                    var show_table_columns = document.getElementById('show_table_columns')
-                    show_table_columns.innerHTML = "<tr><th>서비스고유번호</th><th>신청자 이름</th><th>신청자 전화번호</th><th>서비스 간략한 설명</th><th>할당 여부</th><th>처리 여부</th></tr>"
-                    document.getElementById('search_wcName').style.backgroundColor = "red"
-                    setTimeout(() => {
-                        document.getElementById('search_wcName').style.backgroundColor = "white"
-                    }, 1000)
+                    alert("존재하지 않는 노인복지회관입니다. 다시 입력해주세요.")
+                    return;
+                }
+                else if(res.result == "NoService"){
+                    console.log('data를 받아오지 못했습니다.')
+                    alert("해당 노인복지회관에 등록된 서비스가 없습니다.")
                     return;
                 }
                 // 받아온 data=rows(res)를 갖고, "show_service_from_db"에 table로 출력해줌
@@ -111,15 +149,14 @@
                     }
                     // 각각의 row 바로 오른쪽에 "취소" button 삽입
                     for(let i = 0; i < rows.length; i++){
-                        show_table_columns.rows[i+1].insertCell(6)
-                        show_table_columns.rows[i+1].cells[6].innerHTML = "<button id='cancel_btn'>취소</button>"
+                        show_table_columns.rows[i+1].innerHTML += "<td><button id='cancel_btn_" + i + "'>취소</button></td>"
                     }
-                    // "취소" button을 누르면 해당 row 삭제, DB에서 해당 service 삭제
+                    // "취소" button에 대한 'click' event listener
                     for(let i = 0; i < rows.length; i++){
-                        show_table_columns.rows[i+1].cells[6].addEventListener('click', () => {
+                        const cancel_btn = document.getElementById('cancel_btn_' + i)
+                        cancel_btn.addEventListener('click', () => {
                             console.log("취소 button을 눌렀습니다.")
-                            console.log("취소할 service의 sNum : " + rows[i].sNum)
-                            fetch('/process/cancel_service', {
+                            fetch('/process/cancel_service_from_db', {
                                 method: 'post',
                                 body: JSON.stringify({
                                     sNum: rows[i].sNum
@@ -132,37 +169,33 @@
                                 // json type으로 parsing
                                 console.log("res.result : " + res.result)
                                 if(res.result == "failure"){
-                                    console.log('취소를 실패했습니다.')
+                                    console.log('data를 받아오지 못했습니다.')
+                                    alert("취소에 실패했습니다. 다시 시도해주세요.")
                                     return;
                                 }
                                 // 받아온 data=rows(res)를 갖고, "show_service_from_db"에 table로 출력해줌
                                 else if(res.result == "success"){
-                                    console.log('취소를 성공했습니다.')
-                                    // 해당 row 삭제
+                                    console.log('data를 받아왔습니다.')
+                                    alert("취소에 성공했습니다.")
+                                    // 취소된 row를 table에서 삭제
                                     show_table_columns.deleteRow(i+1)
+                                    return;
                                 }
                             })
                         })
                     }
                     
 
-
-
-
-
-
-
-
+                    // "완료" button을 누르면 봉사자 ID에 해당하는 row의 "처리 여부"를 "완료"로 변경
+                    
+            
                     
                 }
             })
         }
 
-
     </script>
     
-
-
 
 </body>
 

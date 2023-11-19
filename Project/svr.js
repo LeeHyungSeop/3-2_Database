@@ -142,7 +142,7 @@ app.post('/process/wc_register', (req, res) => {
             if (reg_err) {
               console.log("SQL Query 실행시 Error.")
               console.dir(reg_err);
-              res.sendFile(__dirname + '/public/wc_register_failure.html');
+              res.send({result:"Insert Failed"});
               
               return
             }
@@ -150,18 +150,18 @@ app.post('/process/wc_register', (req, res) => {
               // console.dir(res);
               console.log("Register Success!");
               // 공고 등록이 성공하면, wc register success page로 안내
-              res.sendFile(__dirname + '/public/wc_register_success.html');
+              res.send({result:"success"});
             }
             else {
               console.log("Inserted Failed");
-              res.sendFile(__dirname + '/public/wc_register_failure.html');
+              res.send({result:"Insert Failed"});
             }
           }
         )
       }
       else{
         console.log("wcName이 존재하지 않습니다.");
-        res.sendFile(__dirname + '/public/wc_register_failure.html');
+        res.send({result:"No wcName"});
       }
     }
   );
@@ -200,7 +200,7 @@ app.post('/process/search_service_from_db', (req, res) => {
       }
       else{
         console.log("공고가 존재하지 않습니다.");
-        res.send({result:"failure"});
+        res.send({result:"NoService"});
       }
     }
   );
@@ -209,8 +209,8 @@ app.post('/process/search_service_from_db', (req, res) => {
 })
 
 // wc_register.html에서 "취소" button에 대한 처리
-app.post("/process/cancel_service", (req, res) => {
-  console.log('/process/cancel_service 호출됨' +req)
+app.post("/process/cancel_service_from_db", (req, res) => {
+  console.log('/process/cancel_service_from_db 호출됨' +req)
 
   const param_sNum = req.body.sNum
   // 받아온 data 출력
@@ -232,10 +232,11 @@ app.post("/process/cancel_service", (req, res) => {
       }
       if (res) {
         console.log(param_sNum+" service를 삭제했습니다.");
-        // 공고가 존재하면, 공고 삭제 성공
+        res.send({result:"success"});
       }
       else{
         console.log(param_sNum+" service가 존재하지 않습니다.");
+        res.send({result:"failure"});
       }
     }
   );
@@ -243,6 +244,44 @@ app.post("/process/cancel_service", (req, res) => {
   db.close();
 })
 
+// wc_register.html에서 "완료" button에 대한 처리
+app.post("/process/finish_service", (req, res) => {
+  console.log('/process/finish_service 호출됨' +req)
+
+  const param_sNum = req.body.sNum
+  const param_vID = req.body.vID
+  // 받아온 data 출력
+  console.log('requested parameters : ' + param_sNum, + param_vID);
+  
+  // DB object 생성
+  var db = new sqlite3.Database('./OpenAPI_Project_DB/project.db');
+  // DB open
+  db.all(
+    // DB의 SERVICES 테이블에서 sNum이 일치하는 공고를 삭제
+    `UPDATE SERVICES SET isFinish = 'Y' WHERE sNum = ?;`,
+    [param_sNum],
+    // DB의 VOLUNTEERS 테이블에서 vID가 일치하는 회원의 accumCNT를 1 증가
+    `UPDATE VOLUNTEERS SET accumCNT = accumCNT + 1 WHERE vID = (SELECT vID FROM SERVICES WHERE sNum = ?);`,
+    [param_sNum],
+    function (err, rows) {
+      console.log("rows : " + rows);
+      if (err) {
+        console.log("SQL Query 실행시 Error.")
+        console.dir(err);
+        return
+      }
+      if (res) {
+        res.send({result:"success"});
+        // 공고가 존재하면, 공고 삭제 성공
+      }
+      else{
+        res.send({result:"failure"});
+      }
+    }
+  );
+  // close the database connection
+  db.close();
+})
 
 // volunteer_main.html에서 보낸 노인복지회관에 대한 공고들을 return
 app.get('/process/find_services', (req, res) => {
