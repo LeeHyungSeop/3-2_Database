@@ -19,6 +19,10 @@ console.log('현재 디렉토리 : ' + __dirname);
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/main.html')
 })
+// volunteer_main.html에서 "로그아웃" button에 대한 처리
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/public/main.html')
+})
 // volunteer's login page로 안내
 app.get('/volunteer_login', (req, res) => {
   res.sendFile(__dirname + '/public/volunteer_login.html')
@@ -298,18 +302,160 @@ app.post('/process/finish_service_from_db', (req, res) => {
       }
     }
   );
-
-
   // close the database connection
   db.close();
 });
 
-// volunteer_main.html에서 보낸 노인복지회관에 대한 공고들을 return
-app.get('/process/find_services', (req, res) => {
-  console.log('/process/find_services 호출됨' +req)
-  // 작성해야 함
+// volunteer_main.html에서 "신청" button에 대한 처리
+app.post('/process/assign_service_from_db', (req, res) => {
+  console.log('/process/assign_service_from_db 호출됨' + req);
 
+  const param_sNum = req.body.sNum;
+  const param_vID = req.body.vID;
+  // 받아온 data 출력
+  console.log('requested parameters : ' + param_sNum + ', ' + param_vID);
+
+  var db = new sqlite3.Database('./OpenAPI_Project_DB/project.db');
+  db.all(
+    // 1. DB의 SERVICES 테이블의 sNum이 일치하는 공고의 isAssign가 'N'인지 확인
+    `SELECT * FROM SERVICES WHERE sNum = ? AND isAssign = 'N';`,
+    [param_sNum],
+    function (err, rows) {
+      console.log("rows.length : " + rows.length);
+      console.log("res : " + res);
+      if (err) {
+        console.log("SQL Query 실행시 Error.")
+        console.dir(err);
+        return
+      }
+      if (rows.length > 0) {
+        // 2. DB의 SERVICES 테이블에서 sNum이 일치하는 공고의 isAssign를 'Y'로 변경
+        // 3. DB의 SERVICES 테이블에서 sNum이 일치하는 공고의 vID를 param_vID로 변경
+        db = new sqlite3.Database('./OpenAPI_Project_DB/project.db');
+        db.serialize(function () {
+            db.run(`UPDATE SERVICES SET isAssign = 'Y', vID = ? WHERE sNum = ?;`, 
+            [param_vID, param_sNum], 
+            function (err) {
+                if (err) {
+                    console.log("SQL Query 실행시 Error.")
+                    console.log("신청 실패");
+                    console.dir(err);
+                    res.send({ result: "failure" });
+                } 
+                else if (res) {
+                    console.log("res : " + res);
+                    console.log("신청 성공");
+                    res.send({ result: "success" });
+                }
+            });
+        });
+    }
+    // 이미 신청되어있는 공고라면, 신청 실패
+      else{
+        
+        console.log("이미 신청되어있는 공고입니다.");
+        res.send({result:"already_assigned"});
+      }
+    }
+  );
+  // close the database connection
+  db.close();
 });
+
+// volunteer_main.html에서 "신청 취소" button에 대한 처리
+app.post("/process/assign_cancel_from_db", (req, res) => {
+  console.log('/process/assign_cancel_from_db 호출됨' +req)
+
+  const param_sNum = req.body.sNum
+  const param_vID = req.body.vID
+  // 받아온 data 출력
+  console.log('requested parameters : ' + param_sNum);
+  
+  // DB object 생성
+  var db = new sqlite3.Database('./OpenAPI_Project_DB/project.db');
+  // DB open
+  db.all(
+    // 1. DB의 SERVICES 테이블의 sNum이 일치하는 공고의 isAssign가 'Y'인지 확인
+    `SELECT * FROM SERVICES WHERE sNum = ? AND isAssign = 'Y';`,
+    [param_sNum],
+    function (err, rows) {
+      console.log("rows.length : " + rows.length);
+      console.log("res : " + res);
+      if (err) {
+        console.log("SQL Query 실행시 Error.")
+        console.dir(err);
+        return
+      }
+      if (rows.length > 0) {
+        // 2. DB의 SERVICES 테이블에서 sNum이 일치하는 공고의 isAssign를 'N'로 변경
+        // 3. DB의 SERVICES 테이블에서 sNum이 일치하는 공고의 vID를 Null로 변경
+        db = new sqlite3.Database('./OpenAPI_Project_DB/project.db');
+        db.serialize(function () {
+            db.run(`UPDATE SERVICES SET isAssign = 'N', vID = null WHERE sNum = ?;`, 
+            [param_sNum], 
+            function (err) {
+                if (err) {
+                    console.log("SQL Query 실행시 Error.")
+                    console.log("신청 취소 실패");
+                    console.dir(err);
+                    res.send({ result: "failure" });
+                } 
+                else if (res) {
+                    console.log("res : " + res);
+                    console.log(param_sNum+" service의 신청을 취소했습니다.");
+                    res.send({ result: "success" });
+                }
+            });
+        });
+      }
+      else{
+        console.log(param_sNum+"을 신청한 회원님이 없습니다.");
+        res.send({result:"already_not_assigned"});
+      }
+    }
+  );
+  // close the database connection
+  db.close();
+})
+
+// volunteer_main.html에서 "vID"회원이 신청한 공고들 보여주기
+app.post('/process/show_assign_from_db', (req, res) => {
+  console.log('/process/show_assign_from_db 호출됨' +req)
+
+  const param_vID = req.body.vID
+  // 받아온 data 출력
+  console.log('requested parameters : ' + param_vID);
+  
+  // DB object 생성
+  var db = new sqlite3.Database('./OpenAPI_Project_DB/project.db');
+  // DB open
+  db.all(
+    // DB의 SERVICES 테이블에서 vID가 일치하는 공고들을 return
+    `SELECT * FROM SERVICES WHERE vID = ?;`,
+    [param_vID],
+    function (err, rows) {
+      console.log("res : " + res);
+      if (err) {
+        console.log("SQL Query 실행시 Error.")
+        console.dir(err);
+        return
+      }
+      if (rows.length > 0) {
+        console.log(param_vID+"회원이 신청한 공고가 존재합니다.");
+        // 공고들이 담겨있는 rows를 client에게 전송 (res.result="success"와 res.rows=rows)  
+        rows = JSON.stringify(rows);
+        console.log("rows : " + rows);
+        res.send({result:"success", rows:rows});
+      }
+      else{
+        console.log(param_vID+"회원이 신청한 공고가 존재하지 않습니다.");
+        res.send({result:"NoService"});
+      }
+    }
+  );
+  // close the database connection
+  db.close();
+})
 
 app.listen(3000, () => {
   console.log('listening on port 3000')
