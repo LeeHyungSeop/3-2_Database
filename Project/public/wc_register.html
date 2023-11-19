@@ -147,9 +147,10 @@
                             "</td><td>" + rows[i].isFinish + 
                             "</td></tr>"
                     }
-                    // 각각의 row 바로 오른쪽에 "취소" button 삽입
+                    // 각각의 row 바로 오른쪽에 "취소", "완료" button 삽입
                     for(let i = 0; i < rows.length; i++){
                         show_table_columns.rows[i+1].innerHTML += "<td><button id='cancel_btn_" + i + "'>취소</button></td>"
+                        show_table_columns.rows[i+1].innerHTML += "<td><button id='finish_btn_" + i + "'>완료</button></td>"
                     }
                     // "취소" button에 대한 'click' event listener
                     for(let i = 0; i < rows.length; i++){
@@ -185,8 +186,63 @@
                         })
                     }
                     
+                    // "완료" button에 대한 'click' event listener
+                    for(let i = 0; i < rows.length; i++){
+                        const finish_btn = document.getElementById('finish_btn_' + i)
+                        finish_btn.addEventListener('click', () => {
+                            console.log("완료 button을 눌렀습니다.")
+                            // "봉사자 ID"에 대한 입력이 없으면, alert
+                            if (document.getElementById('volunteer_id').value == ""){
+                                alert("봉사자 ID를 입력해주세요.")
+                                return;
+                            }
+                            // "처리 여부"가 "Y"라면, alert
+                            if (rows[i].isFinish == "Y"){
+                                alert("이미 처리 완료된 서비스입니다.")
+                                return;
+                            }
+                            fetch('/process/finish_service_from_db', {
+                                method: 'post',
+                                body: JSON.stringify({
+                                    sNum: rows[i].sNum,
+                                    vID: document.getElementById('volunteer_id').value
+                                }),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            }).then((res) => res.json())
+                            .then((res) => {
+                                // json type으로 parsing
+                                console.log("res.result : " + res.result)
+                                if(res.result == "failure"){
+                                    console.log('data를 받아오지 못했습니다.')
+                                    alert("완료에 실패했습니다. 다시 시도해주세요.")
+                                    return;
+                                }
+                                else if(res.result == "No_vID"){
+                                    console.log('존재하지 않는 ID입니다')
+                                    alert("존재하지 않는 봉사자 ID입니다.")
+                                    return;
+                                }
+                                // 받아온 data=rows(res)를 갖고, "show_service_from_db"에 table로 출력해줌
+                                else if(res.result == "success"){
+                                    console.log('data를 받아왔습니다.')
+                                    alert("완료에 성공했습니다.")
+                                    // 완료된 row의 "처리 여부"를 "Y"로 변경
+                                    show_table_columns.rows[i+1].cells[5].innerHTML = "Y"
+                                    return
+                                }
+                                else {
+                                    console.log('data를 받아오지 못했습니다.')
+                                    alert("완료에 실패했습니다. 다시 시도해주세요.")
+                                    return;
+                                }
+                            })
+                        })
+                    }
 
-                    // "완료" button을 누르면 봉사자 ID에 해당하는 row의 "처리 여부"를 "완료"로 변경
+
+
                     
             
                     

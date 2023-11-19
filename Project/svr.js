@@ -245,43 +245,59 @@ app.post("/process/cancel_service_from_db", (req, res) => {
 })
 
 // wc_register.html에서 "완료" button에 대한 처리
-app.post("/process/finish_service", (req, res) => {
-  console.log('/process/finish_service 호출됨' +req)
+app.post('/process/finish_service_from_db', (req, res) => {
+  console.log('/process/finish_service_from_db 호출됨' + req);
 
-  const param_sNum = req.body.sNum
-  const param_vID = req.body.vID
+  const param_sNum = req.body.sNum;
+  const param_vID = req.body.vID;
   // 받아온 data 출력
-  console.log('requested parameters : ' + param_sNum, + param_vID);
-  
-  // DB object 생성
+  console.log('requested parameters : ' + param_sNum + ', ' + param_vID);
+
   var db = new sqlite3.Database('./OpenAPI_Project_DB/project.db');
-  // DB open
   db.all(
-    // DB의 SERVICES 테이블에서 sNum이 일치하는 공고를 삭제
-    `UPDATE SERVICES SET isFinish = 'Y' WHERE sNum = ?;`,
-    [param_sNum],
-    // DB의 VOLUNTEERS 테이블에서 vID가 일치하는 회원의 accumCNT를 1 증가
-    `UPDATE VOLUNTEERS SET accumCNT = accumCNT + 1 WHERE vID = (SELECT vID FROM SERVICES WHERE sNum = ?);`,
-    [param_sNum],
+    // 1. DB의 VOLUNTEERS 테이블에서 vID가 일치하는 회원이 있는지 확인
+    `SELECT * FROM VOLUNTEERS WHERE vID = ?;`,
+    [param_vID],
     function (err, rows) {
-      console.log("rows : " + rows);
+      console.log("res : " + res);
       if (err) {
         console.log("SQL Query 실행시 Error.")
         console.dir(err);
         return
       }
-      if (res) {
-        res.send({result:"success"});
-        // 공고가 존재하면, 공고 삭제 성공
-      }
+      if (rows.length > 0) {
+        // 2. DB의 VOLUNTEERS 테이블에서 vID가 일치하는 회원의 accumCNT를 1 증가
+        // 3. DB의 SERVICES 테이블에서 sNum이 일치하는 공고의 isFinish를 'Y'로 변경
+        // 4. DB의 SERVICES 테이블에서 sNum이 일치하는 공고의 vID를 param_vID로 변경
+        // 2., 3., 4.를 다중 query로 처리
+        db = new sqlite3.Database('./OpenAPI_Project_DB/project.db');
+        db.serialize(function () {
+            db.run(`UPDATE VOLUNTEERS SET accumCNT = accumCNT + 1 WHERE vID = ?;`, [param_vID]);
+            db.run(`UPDATE SERVICES SET isFinish = 'Y', vID = ? WHERE sNum = ?;`, [param_vID, param_sNum], function (err) {
+                if (err) {
+                    console.log("SQL Query 실행시 Error.")
+                    console.dir(err);
+                    res.send({ result: "failure" });
+                } 
+                else if (res) {
+                    console.log("res : " + res);
+                    console.log("volunteer accumCNT 증가, service 완료 처리 완료");
+                    res.send({ result: "success" });
+                }
+            });
+        });
+    }
       else{
-        res.send({result:"failure"});
+        console.log("vID가 존재하지 않습니다.");
+        res.send({result:"No_vID"});
       }
     }
   );
+
+
   // close the database connection
   db.close();
-})
+});
 
 // volunteer_main.html에서 보낸 노인복지회관에 대한 공고들을 return
 app.get('/process/find_services', (req, res) => {
