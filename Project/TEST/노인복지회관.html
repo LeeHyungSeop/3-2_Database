@@ -2,38 +2,65 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Load External Script</title>
-    <!--  In a web browser environment, the require function is not available, 
-        as it is commonly used in Node.js environments. 
-        Instead, you should include the Axios library directly in your HTML file using a script tag, 
-        or you can use a Content Delivery Network (CDN) to load it. -->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> 
-    
+    <title>Kakao Maps API Test</title>
+    <script 
+    type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=044b03c2ea36f5a75d0dca33b070f689"
+    ></script>
 </head>
 <body>
+    <div id="map" style="width:500px; height:400px;"></div>
 
     <script>
-        const key = "jiOmJfJl1DuS3wgn5gO+iklZUufTTr9upGZyPm2fHmlqVIuj0pUuUa7ixsTrQK1asGso3S73YM6bx49f2bnFbg==";
-        const url = "https://api.odcloud.kr/api/15004317/v1/uddi:a27dc8f0-26b8-42ca-8f4c-c33da26e51a1_201909202206";
+        var wcName = "종로노인복지회관"
 
-        const queryParams = {
-            serviceKey: key,
-            page: '1',
-            perPage: '1000',
-            returnType: 'JSON',
-        };
-        
-        axios.get(url, { params: queryParams })
-            .then(response => {
-                console.log('Status:', response.status);
-                console.log('Headers:', response.headers);
-                console.log('Body:', response.data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-        });
+        // 현재 위치를 받아와서 마커를 찍고, "현재 위치"를 표시한다.
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var lat = position.coords.latitude, // 위도
+                    lon = position.coords.longitude; // 경도
+
+                var container = document.getElementById('map');
+                var options = {
+                    center: new kakao.maps.LatLng(lat, lon),
+                    level: 3
+                };
+                var map = new kakao.maps.Map(container, options);
+                // 마커가 표시될 위치입니다
+                var markerPosition  = new kakao.maps.LatLng(lat, lon);
+                // 마커를 생성합니다
+                var marker = new kakao.maps.Marker({
+                    position: markerPosition
+                });
+                // 마커가 지도 위에 표시되도록 설정합니다
+                marker.setMap(map);
+                // 인포윈도우로 장소에 대한 설명을 표시합니다
+                var iwContent = '회원님의 현재 위치입니다.';
+                // 인포윈도우를 생성합니다
+                var infowindow = new kakao.maps.InfoWindow({
+                    content : iwContent
+                });
+                // 인포윈도우를 마커위에 표시합니다
+                infowindow.open(map, marker);
+
+                var wcLink = "https://map.kakao.com/link/search/" + wcName;
+                // wcLink를 a태그로 만들어준다.
+                var wcLinkTag = document.createElement("a");
+                wcLinkTag.setAttribute("href", wcLink);
+                wcLinkTag.setAttribute("target", "_blank");
+                wcLinkTag.innerHTML = wcName+"까지 길찾기";
+                // wcLinkTag를 div에 넣어준다.
+                var wcLinkDiv = document.createElement("div");
+                wcLinkDiv.appendChild(wcLinkTag);
+                // wcLinkDiv를 인포윈도우에 넣어준다.
+                infowindow.setContent(wcLinkDiv);
+
+            });
+        } 
+        else {
+            alert('GPS를 지원하지 않습니다');
+        }
+
+
     </script>
-
 </body>
 </html>
