@@ -1,7 +1,7 @@
 const express = require('express')
 const path = require('path')
 const static = require('serve-static')
-const sqlite3 = require('sqlite3').verbose();
+const sqlite3 = require('sqlite3').verbose(); // Node.JS sqlite3 ref : https://www.sqlitetutorial.net/sqlite-nodejs/
 const app = express()
 const nunjucks = require('nunjucks');
 
