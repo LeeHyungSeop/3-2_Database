@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="/Users/ihyeongseob/Desktop/인천대/3학년/2학기/데이터베이스/SQL_실습/admission.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2246"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,5:mainApply"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="Apply" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="138"/><column index="2" value="214"/><column index="3" value="71"/><column index="4" value="56"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="CSBerkAccept" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="31"/><column index="2" value="44"/><column index="3" value="31"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="CSaccept" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="95"/><column index="2" value="59"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="College" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="59"/><column index="2" value="38"/><column index="3" value="68"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Mega" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort><column index="7" mode="0"/></sort><column_widths><column index="1" value="31"/><column index="2" value="51"/><column index="3" value="31"/><column index="4" value="48"/><column index="5" value="64"/><column index="6" value="41"/><column index="7" value="74"/><column index="8" value="77"/><column index="9" value="61"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Student" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="147"/><column index="2" value="167"/><column index="3" value="98"/><column index="4" value="44"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 6">-- 10주차 수요일 수업시간
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="/Users/ihyeongseob/Desktop/인천대/3학년/2학기/데이터베이스/SQL_실습/admission.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2246"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,7:mainCollege"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="Apply" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort><column index="2" mode="1"/></sort><column_widths><column index="1" value="31"/><column index="2" value="64"/><column index="3" value="77"/><column index="4" value="61"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="CSBerkAccept" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="31"/><column index="2" value="44"/><column index="3" value="31"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="CSaccept" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="95"/><column index="2" value="59"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="College" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort><column index="1" mode="0"/></sort><column_widths><column index="1" value="59"/><column index="2" value="38"/><column index="3" value="68"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Mega" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort><column index="7" mode="0"/></sort><column_widths><column index="1" value="31"/><column index="2" value="51"/><column index="3" value="31"/><column index="4" value="48"/><column index="5" value="64"/><column index="6" value="41"/><column index="7" value="74"/><column index="8" value="77"/><column index="9" value="61"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Student" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort><column index="3" mode="1"/></sort><column_widths><column index="1" value="147"/><column index="2" value="167"/><column index="3" value="98"/><column index="4" value="44"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 6">-- 10주차 수요일 수업시간
 
 -- select, from, where 실습
 
@@ -39,7 +39,8 @@
 -- Apply.cName과 College.cName 두 개의 attribute가 결과 table에 나타나는데, select에서 College.cName만 뽑아내서 하나만 출력됨.
 
 -- 7. bio관련 학과(이름에 bio라는 글자가 들어가는 학과)에 지원한 학생의 아이디와 전공을 구하시오
--- SELECT Apply.sID, Apply.major
+--  _ : 하나의 character를 matching
+-- T Apply.sID, Apply.major
 -- FROM Apply
 -- WHERE Apply.major like '%bio%'
 
@@ -82,10 +83,10 @@
 -- FROM Student S1, Student S2
 -- WHERE (S1.GPA = S2.GPA) and (S1.sID &lt; S2.sID)
 -- 3-2)
-SELECT S1.sID, S1.sName, S1.GPA, S2.sID, S2.sName, S2.GPA
-FROM Student S1, Student S2
-WHERE (S1.GPA = S2.GPA) and (S1.sID &lt; S2.sID)
-order by S1.sID DESC
+-- SELECT S1.sID, S1.sName, S1.GPA, S2.sID, S2.sName, S2.GPA
+-- FROM Student S1, Student S2
+-- WHERE (S1.GPA = S2.GPA) and (S1.sID not like S2.sID)
+-- order by S1.sID DESC
 
 
 
@@ -205,9 +206,9 @@ order by S1.sID DESC
 -- WHERE S.sID=A.sID AND A.major='CS'
 
 -- 3. CS에 지원한 학생의 GPA 평균을 구하시오. (*****)
---  SELECT * -- -&gt; 이렇게 하면 안됌
--- s S, Apply as A
---  WHERE S.sID=A.sID AND A.major='CS'
+-- SELECT * -- -&gt; 이렇게 하면 안됌
+-- , Apply as A
+-- WHERE S.sID=A.sID AND A.major='CS'
 
 -- SELECT AVG(GPA) --&gt; 정답
 --  Student as S
@@ -225,9 +226,9 @@ order by S1.sID DESC
 -- WHERE S.sID = A.sID AND A.cName='Cornell'
 
 -- 6. &quot;Cornell&quot;대학에 지원한 학생은 몇 명인가?  (*****)
-SELECT COUNT(DISTINCT (S.sID))
-FROM Student as S, Apply as A
-WHERE S.sID = A.sID AND A.cName='Cornell'
+-- SELECT COUNT(DISTINCT (S.sID))
+-- FROM Student as S, Apply as A
+-- WHERE S.sID = A.sID AND A.cName='Cornell'
 
 
 
@@ -280,10 +281,10 @@ WHERE S.sID = A.sID AND A.cName='Cornell'
 -- HAVING result &lt; 5
 
 -- 6. 지원학생(applicant) 숫자가 5보다 작은 대학의 이름
-SELECT cName, count(DISTINCT sID)
-FROM Apply as A
-GROUP BY cName
-HAVING count(DISTINCT sID) &lt; 5;
+-- SELECT cName, count(DISTINCT sID)
+-- FROM Apply as A
+-- GROUP BY cName
+-- HAVING count(DISTINCT sID) &lt; 5;
  
 
 
@@ -459,7 +460,7 @@ HAVING count(DISTINCT sID) &lt; 5;
 	
 -- Student에 S라는 alias 적용 O -&gt; 에러 발생
 -- DELETE
--- FROM Student  as S
+-- FROM Student  S
 -- WHERE S.sID IN 
 -- 	(SELECT A.sID 
 -- 	FROM Apply A
@@ -578,4 +579,246 @@ HAVING count(DISTINCT sID) &lt; 5;
 
 
 
-</sql><sql name="SQL 13">-- 13주차 실습 2, 수요일 : SQL의 기타 기능</sql><current_tab id="10"/></tab_sql></sqlb_project>
+</sql><sql name="SQL 13">-- 13주차 실습 2, 수요일 : SQL의 기타 기능
+--&gt; pdf로 진행
+
+-- Practice
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+--  1. GPA가 3.6보다 큰 학생의 아이디, 이름, GPA를 구하시오
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 2. GPA가 3.6보다 큰 학생의 정보를 구하시오
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 3. CS에 합격한 학생의 아이디를 구하시오
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 3.1 CS에 합격한 경우는 몇 개인가?
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 6. 지원한 학생의 아이디, 이름, GPA, 지원대학이름, 대학등록생수를 구하시오
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 7. * bio관련 학과(이름에 bio라는 글자가 들어가는 학과)에 지원한 학생의 아이디와 전공을 구하시오 
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 학생의 아이디, 이름, GPA, sizeHS를 구하시오
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 1. 고등학교의 학생수가 많으면 GPA를 올려주고, 학생수가 적으면 GPA를 내려줌
+-- scaledGPA = GPA * (sizeHS / 1000.0)
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 2. 학생의 아이디, 이름, GPA, 지원대학, 대학등록생(enrollment)을 구하시오
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 3. ** GPA가 같은 학생의 쌍을 구하시오 (학생1의 아이디, 이름, GPA, 학생2의 아이디, 이름, GPA)
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 1. 학생이름과 학교이름을 모두 구하시오.
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 2. Student table에는 동명이인 (Amy, Craig)이 있었는데 UNION(합집합)을 사용했더니 중복이 사라짐.
+-- 그런데 만약 학생, 학교가 몇 명 있는지 count하기 위한 의도였다면, 중복이 사라지면 안됌. -&gt; ALL
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 3. CS와 EE에 모두 지원한 학생의 아이디를 구하시오.  (IN 연산자 사용 X)
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 4. CS와 EE에 모두 지원한 학생의 아이디를 구하시오.  (IN 연산자 사용 O)
+	
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 5. CS에 지원하고, EE에는 지원하지 않은 학생을 구하라 
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 6. CS에 지원하고, EE에는 지원하지 않은 학생을 구하라 (join 연산자로 바꿀 수 있을까?)
+-- 모든 집합 연산자를 join 연산자로 바꿀 수 있는 것은 아니다! (더 공부 해봐야 할듯)
+
+
+
+-------------------------------------------------------------------------------------------------------------
+-- 1. CS에 지원한 학생의 아이디, 이름을 구하시오 (IN 연산자 사용 X)
+
+
+-------------------------------------------------------------------------------------------------------------
+-- 2. CS에 지원한 학생의 아이디, 이름을 구하시오 (IN 연산자 사용 O)
+
+-------------------------------------------------------------------------------------------------------------
+-- 3-1) CS에 지원한 학생의 GPA를 구하시오. (IN 연산자 사용 X)
+
+
+
+-------------------------------------------------------------------------------------------------------------
+-- 3-2) CS에 지원한 학생의 GPA를 구하시오. (IN 연산자 사용 O)	
+
+
+-------------------------------------------------------------------------------------------------------------
+-- 4-1) CS에 지원하고, EE에는 지원하지 않은 학생의 아이디와 이름을 구하시오  (차집합 사용)
+
+
+-------------------------------------------------------------------------------------------------------------
+-- 4-2) CS에 지원하고, EE에는 지원하지 않은 학생의 아이디와 이름을 구하시오  (IN 사용)
+
+
+-------------------------------------------------------------------------------------------------------------
+-- ** 같은 주(state)에 다른 대학이 있는 대학의 이름과 주(state)
+
+
+-------------------------------------------------------------------------------------------------------------
+-- 6. 재학생수(enrollment)가 가장 많은 대학의 이름을 구하시오.
+
+
+
+-------------------------------------------------------------------------------------------------------------
+-- 7. GPA가 가장 높은 학생의 이름과 GPA를 구하시오
+
+
+
+-------------------------------------------------------------------------------------------------------------
+-- 8. ALL, ANY로 구현할 수 있는데 SQLite에서는 구현되지는 않는다.
+-- 모든 GPA를 구하고, 그 GPA들보다 크거나 같은 GPA를 구하라
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 1. 모든 학생의 GPA의 평균을 구하시오
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 2. CS에 지원한 학생 중 최소 GPA를 구하시오.
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 3. ** CS에 지원한 학생의 GPA 평균을 구하시오.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 4. 등록학생 (enrollment)가 15,000보다 큰 대학의 숫자를 구하시오, (count 사용)
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 5. &quot;Cornell&quot;대학에 지원된 숫자를 구하시오
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 6. &quot;Cornell&quot;대학에 지원한 학생은 몇 명인가?  (*****)
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 1. 각 대학별로 지원(applications)의 숫자를 구하시오
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 2. 각 주(state)별로 등록생수(enrollment)의 합을 구하시오
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 3. * 대학, 전공 별로 지원자의 최대 GPA, 최소 GPA를 구하시오.
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 4. *** 학생의 아이디, 학생 이름, 학생이 지원한 대학의 숫자를 구하시오. 
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+--  5. 지원(applications) 숫자가 5보다 작은 대학의 이름
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 6. 지원학생(applicant) 숫자가 5보다 작은 대학의 이름
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 3. 1., 2.를 UNION하면 전체 학생이 다 나오는가? 아니다. NULL값도 존재한다 (******)
+-- SELECT sID, sName, GPA
+-- FROM Student
+-- WHERE GPA &gt;= 3.5 or GPA &lt; 3.5 or GPA IS NULL
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 1. 새로운 대학 isert ('CMU', 'PA', 11500) 
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 2. 어느 대학에도 지원하지 않은 학생의 sID를 구하시오
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 3. 어느 대학에도 지원하지 않은 학생을 CMU대학의 CS에 지원하고 결과는 알려지지 않은 것으로 처리하시오.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 4. 다른 대학 EE에 지원했으나 떨어진 학생을 CMU EE에 합격한 것으로 처리하시오
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 2. 2개보다 많은 전공(major)에 지원한 학생을 지우시오
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 3. Bob의 sID를 111로 바꾸시오
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 1. CS에 지원하고, 결과는 합격인 학생의 아이디, 이름, 대학이름을 구하시오
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 2. 1.의 결과 table을 자주 사용하니까 VIEW로 만들어보자. -&gt; 데이터보기에서 CSaccept라는 VIEW가 만들어짐.
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 3. 2.에서 만든 CSaccept라는 가상의 Table을 활용
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 4-1. Stanford CS에 합격한 학생 중 GPA가 3.8 미만인 학생의 ID, 이름, GPA를 구하시오
+
+
+-- 4-2. 결과가 당연히 똑같이 나옴
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 5. VIEW를 이용해서 또 다른 VIEW를 만들 수도 있다.
+-- Berkeley 대학의 CS에 합격한 학생의 ID, 이름, GPA를 구하시오
+
+-- CSaccept라는 VIEW를 이용하여 또 다른 CSBerkAccept라는 VIEW를 만들었다.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 6. Berkeley CS에 합격한 학생중 GPA가 3.8보다 높은 학생의 sID, 이름, GPA를 구하시오 (join할 필요 없이 이미 CSBerkAccept라는 VIEW로 만들어놨으니, 그것을 이용하면 된다)
+-- 최종 expansion
+
+
+-- 바로 위에서는 select가 3개가 중첩되어 있는데, 실제로는 성능이 좋지 않아서 내부적으로 DBMS에서는 query를 optimization하여 그냥 SELECT FROM WHERE로 구현한 것처럼 한다.
+-- (DBMS에서는 내부적으로 이렇게 대체되어 실행된다.) 
+-- SELECT S.sID, S.sName, S.GPA
+-- FROM Student S, Apply A
+-- WHERE S.sID = A.sID AND A.cName=&quot;Berkeley&quot; AND A.major = &quot;CS&quot; AND S.GPA &gt; 3.8
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 7. CSBerkAccept에 INSERT할 수 없다 (cannot modify CSBerkAccept because it is a view)
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 8. 학생 아이디, 이름, GPA, 고등학교 사이즈, 지원대학, 대학의 주(state), 대학 등록학생, 지원 학과, 지원 결과
+
+
+-- Mega라는 VIEW로 만들기
+
+
+-- GPA가 3.5보다 크고, CS에 지원했고, 지원한 대학의 등록생이 15000 보다 큰 학생의 아이디, 이름, 지원대학이름을 구하시오.
+-- query가 간단해지긴 했지만, 좋은 건 아니다..
+-- 애초에 Studnet, Appply, College Table로 나누지 않고 Mega View를 Table로 만들었으면 되는거 아닌가?
+-- -&gt; 아니다. Mega를 Table로 만들었다면 중복이 많기 때문에 만약 Stanford의 enrollment를 15000에서 16000으로 수정하려면 5개의 tuple이 수정되어야 한다. 극단적으로 가면 너무 많은 tuple을 수정해야 한다.
+-- -&gt; 나중에 배울 Normalization에 대한 내용
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- 9. 지금까지 만든 VIEW들을 삭제하기
+</sql><current_tab id="10"/></tab_sql></sqlb_project>

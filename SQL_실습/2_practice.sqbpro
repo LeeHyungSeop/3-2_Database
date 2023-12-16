@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="/Users/ihyeongseob/Desktop/인천대/3학년/2학기/데이터베이스/SQL_실습/admission.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2246"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,5:mainApply"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="Apply" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="31"/><column index="2" value="53"/><column index="3" value="83"/><column index="4" value="52"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 26">-- Practice
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="/Users/ihyeongseob/Desktop/인천대/3학년/2학기/데이터베이스/SQL_실습/admission.db" readonly="0" foreign_keys="" case_sensitive_like="" temp_store="" wal_autocheckpoint="" synchronous=""/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2246"/><column_width id="4" width="0"/></tab_structure><tab_browse><current_table name="0,0:"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 26">-- Practice
 
 --  1. GPA가 3.6보다 큰 학생의 아이디, 이름, GPA를 구하시오
 
@@ -131,7 +131,7 @@
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- 1. 새로운 대학 isert ('CMU', 'PA', 11500) 
 
------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------z------------------------------------------------------------
 -- 2. 어느 대학에도 지원하지 않은 학생의 sID를 구하시오
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
