@@ -24,4 +24,4 @@
   * Used OpenAPI : [Kakao Map](https://apis.map.kakao.com/ios_v2/docs/)
 
 * Result 
-![](./Project/project_prototype.gif)
+  * ![](./Project/project_prototype.gif)
