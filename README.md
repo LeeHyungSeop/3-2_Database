@@ -10,11 +10,13 @@
 ## Project
 
 * Term Project 
+   ```   
    * Plan a third-party service (app/web) using Open API and your own database.
       * Use public data or Open APIs provided by Naver/Google, etc. 
       * Design and use a relational database to manage information locally 
       * Include parts that process data with SQL in the database 
       * The proposed idea and design for the new service are important
+   ```
 
 * Details in Project/
   * I used SQLite3 as a database.
